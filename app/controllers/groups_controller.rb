@@ -14,6 +14,7 @@ class GroupsController < ApplicationController
     @group.user = current_user
 
     if @group.save
+      current_user.join!(@group)
       redirect_to groups_path
     else
       render :new
@@ -40,6 +41,30 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
     @posts = Post.all.recent.paginate(:page => params[:page], :per_page => 4)
+  end
+
+  def join
+    @group = Group.find(params[:id])
+    if !current_user.is_member_of?(@group)
+      current_user.join!(@group)
+      flash[:notice] = "成功加入群组"
+    else
+      flash[:warning] =  "你已经是群组成员"
+    end
+
+    redirect_to group_path(@group)
+  end
+
+  def quit
+    @group = Group.find(params[:id])
+    if current_user.is_member_of?(@group)
+      current_user.quit!(@group)
+      flash[:alert] = "你已退出群组"
+    else
+      flash[:warning] = "不是群组成员，怎么退出"
+    end
+
+    redirect_to group_path(@group)
   end
 
   private
