@@ -39,6 +39,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
+    @posts = Post.all.recent.paginate(:page => params[:page], :per_page => 4)
   end
 
   private
@@ -52,4 +53,5 @@ class GroupsController < ApplicationController
       redirect_to root_path, alert: "You have no permission."
     end
   end
+
 end
