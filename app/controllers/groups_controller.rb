@@ -47,9 +47,9 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     if !current_user.is_member_of?(@group)
       current_user.join!(@group)
-      flash[:notice] = "成功加入群组"
+      flash[:notice] = "成功收藏电影"
     else
-      flash[:warning] =  "你已经是群组成员"
+      flash[:warning] =  "你已经收藏该电影"
     end
 
     redirect_to group_path(@group)
@@ -59,9 +59,9 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     if current_user.is_member_of?(@group)
       current_user.quit!(@group)
-      flash[:alert] = "你已退出群组"
+      flash[:alert] = "你已取消收藏该电影"
     else
-      flash[:warning] = "不是群组成员，怎么退出"
+      flash[:warning] = "没有收藏该电影，怎么取消收藏"
     end
 
     redirect_to group_path(@group)

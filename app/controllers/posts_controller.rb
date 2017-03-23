@@ -16,37 +16,33 @@ class PostsController < ApplicationController
     else
       render :new
     end
+  end
 
     def edit
-      @group = Group.find(params[:group_id])
-      #@post = @group.post.find(params[:id])
-      @post = Post.find(params[:id])
-      @post.group = @group
-    end
+		  @group = Group.find(params[:group_id])
+		  @post = Post.find(params[:id])
+	  end
 
     def update
-      @group = Group.find(params[:group_id])
-      #@post = @group.post.find(params[:id])
-      @post = Post.find(params[:id])
-      @post.group = @group
-      @post.user = current_user
+		   @group = Group.find(params[:group_id])
+		   @post = Post.find(params[:id])
+		   @post.group = @group
+		   @post.user = current_user
 
-      if @post.update(post_params)
-        redirect_to group_path(@group)
-      else
-        render :edit
-      end
-    end
+		  if @post.update(post_params)
+			  redirect_to account_posts_path
+		  else
+			  render :edit
+		  end
+	  end
 
     def destroy
-      @group = Group.find(params[:group_id])
-      @post = Post.find(params[:id])
-      @post.group = @group
-      @post.destroy
-        flash[:warning] = "delete post Success"
-        redirect_to account_posts_path
-    end
-  end
+  	  @group = Group.find(params[:group_id])
+  	  @post = Post.find(params[:id])
+  	  @post.destroy
+  	  redirect_to account_posts_path, alert: "影评删除"
+  	end
+
 
   private
 
